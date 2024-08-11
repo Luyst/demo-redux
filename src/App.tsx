@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchNotesAsync } from "./redux/note";
+import { AppDispatch } from "./redux/store";
+import NoteList from "./components/NoteList";
+import AddNote from "./components/AddNote";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>(); // Khai báo dispatch với kiểu AppDispatch
+
+    useEffect(() => {
+        // Gọi fetchNotesAsync khi component được mount
+        dispatch(fetchNotesAsync());
+    }, [dispatch]);
+
+    return (
+        <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
+            <header className="mb-8">
+                <h1 className="text-4xl font-extrabold text-gray-800">
+                    Notes App
+                </h1>
+            </header>
+            <main className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
+                <AddNote />
+                <div className="mt-6">
+                    <NoteList />
+                </div>
+            </main>
+        </div>
+    );
+};
 
 export default App;
